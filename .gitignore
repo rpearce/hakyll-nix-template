@@ -1,0 +1,7 @@
+.ghc.environment.*
+.pre-commit-config.yaml
+dist
+dist-newstyle
+hakyll-cache
+node_modules
+result

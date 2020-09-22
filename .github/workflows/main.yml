@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v11
+      with:
+        skip_adding_nixpkgs_channel: true
+
+    - name: Build with cachix
+      uses: cachix/cachix-action@v6
+      with:
+        name: my-site
+        signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
+        #authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+    - run: nix-build
+    - run: nix-shell --run "echo OK"
+
+    - name: Artifact pages
+      uses: actions/upload-artifact@v2
+      with:
+        name: pages
+        path: result/dist
+
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: pages
+          path: result
+
+      - name: GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          build_dir: result
+          target_branch: gh-pages
+          keep_history: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

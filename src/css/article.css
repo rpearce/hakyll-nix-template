@@ -1,0 +1,44 @@
+:root {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+html,
+body {
+  min-height: 100vh;
+}
+body {
+  font-kerning: normal;
+  -moz-font-feature-settings: "kern", "liga", "clig", "calt";
+  -ms-font-feature-settings: "kern", "liga", "clig", "calt";
+  -webkit-font-feature-settings: "kern", "liga", "clig", "calt";
+  font-feature-settings: "kern", "liga", "clig", "calt";
+  scroll-behavior: smooth;
+}
+article h1,
+article small,
+article p {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+article small,
+article p {
+  font-family: Tahoma, Arial, sans-serif;
+}
+article h1 {
+  font-size: 4.0rem;
+}
+article small {
+  font-size: 1.6rem;
+  font-style: italic;
+}
+article p {
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: 1.8rem;
+}
