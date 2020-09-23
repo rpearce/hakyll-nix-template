@@ -4,7 +4,7 @@ in
 { pkgs ? cfg.pkgs }:
 
   pkgs.stdenv.mkDerivation {
-    name = "hakyll-nix-template";
+    name = "my-site";
     buildInputs = [
       cfg.generator
     ];

@@ -19,7 +19,7 @@ jobs:
     - name: Build with cachix
       uses: cachix/cachix-action@v6
       with:
-        name: my-site
+        name: hakyll-nix-template
         signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
         #authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
