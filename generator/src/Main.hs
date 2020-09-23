@@ -82,8 +82,7 @@ main = hakyllWith config $ do
     route idRoute
     compile $ do
       posts <- recentFirst =<< loadAll "posts/*"
-      nzPages <- loadAll "new-zealand/**"
-      let pages = posts <> nzPages
+      let pages = posts
           sitemapCtx =
             constField "root" root
               <> constField "siteName" siteName

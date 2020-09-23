@@ -22,7 +22,6 @@ in
         generator
         pkgs.niv
         pkgs.pre-commit
-        pre-commit-hooks.hlint
         pre-commit-hooks.nixpkgs-fmt
         pre-commit-hooks.ormolu
       ];
