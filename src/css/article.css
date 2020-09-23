@@ -27,18 +27,18 @@ article p {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+article h1 {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 4.0rem;
+}
 article small,
 article p {
   font-family: Tahoma, Arial, sans-serif;
-}
-article h1 {
-  font-size: 4.0rem;
 }
 article small {
   font-size: 1.6rem;
   font-style: italic;
 }
 article p {
-  font-family: Tahoma, Arial, sans-serif;
   font-size: 1.8rem;
 }
