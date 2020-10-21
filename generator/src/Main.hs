@@ -6,7 +6,7 @@ import qualified Data.Text as T
 import Hakyll
 import Slug (toSlug)
 import Text.Pandoc
-  ( Extension (Ext_auto_identifiers, Ext_fenced_code_attributes, Ext_footnotes, Ext_smart),
+  ( Extension (Ext_fenced_code_attributes, Ext_footnotes, Ext_gfm_auto_identifiers, Ext_implicit_header_references, Ext_smart),
     Extensions,
     ReaderOptions,
     WriterOptions,
@@ -143,8 +143,9 @@ pandocExtensionsCustom :: Extensions
 pandocExtensionsCustom =
   githubMarkdownExtensions
     <> extensionsFromList
-      [ Ext_auto_identifiers,
-        Ext_fenced_code_attributes,
+      [ Ext_fenced_code_attributes,
+        Ext_gfm_auto_identifiers,
+        Ext_implicit_header_references,
         Ext_smart,
         Ext_footnotes
       ]
