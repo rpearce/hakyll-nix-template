@@ -8,9 +8,8 @@
 
 1. Click the "Use this template" button and create your repository
 1. Renaming
-  1. Rename all instances of `hakyll-nix-template` and `my-site` with a name for
-     your project
-  1. Rename `generator/my-site.cabal` to reflect your project name
+  1. Rename all instances of `hakyll-nix-template` with the name of your project
+  1. Rename `generator/hakyll-nix-template.cabal` to reflect your project name
 1. Cachix
   1. Create a cachix cache for your project on https://app.cachix.org
   1. Follow the cachix instructions to generate a signing keypair
@@ -23,9 +22,9 @@
 1. To start an environment for running hakyll commands like `hakyll-site watch`
    (the dev server) and `hakyll-site build`: `cd generator && nix-shell`. You'll
    then have access to the `hakyll-site` executable defined in
-   `generator/my-site.cabal`. While you can do `nix-shell` in the root and then
-   `cd generator && hakyll-site watch`, you get some more tools if you
-   `nix-shell` from within the `generator/` folder.
+   `generator/hakyll-nix-template.cabal`. While you can do `nix-shell` in the
+   root and then `cd generator && hakyll-site watch`, you get some more tools if
+   you `nix-shell` from within the `generator/` folder.
 1. Once you're satisfied, create a branch, push your project up there, and check
    that the GitHub Actions successfully build. If so, you're good to merge your
    project with your main branch.

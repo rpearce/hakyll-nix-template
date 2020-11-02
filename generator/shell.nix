@@ -1,21 +1,21 @@
 let
-  cfg = import ../nix/default.nix {};
+  cfg = import ../nix/default.nix { };
   hp = cfg.haskellPackages;
 in
 {}:
 
-  hp.shellFor {
-    packages = p: [
-      p.my-site
-    ];
+hp.shellFor {
+  packages = p: [
+    p.hakyll-nix-template
+  ];
 
-    buildInputs = with hp; [
-      cabal-install
-      ghcid
-      hlint
-      hp.my-site
-      ormolu
-    ];
+  buildInputs = with hp; [
+    cabal-install
+    ghcid
+    hlint
+    hp.hakyll-nix-template
+    ormolu
+  ];
 
-    withHoogle = true;
-  }
+  withHoogle = true;
+}

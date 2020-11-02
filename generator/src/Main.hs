@@ -40,6 +40,8 @@ config =
 
 -- BUILD
 
+{- ORMOLU_DISABLE -}
+
 main :: IO ()
 main = hakyllWith config $ do
   forM_
@@ -57,6 +59,7 @@ main = hakyllWith config $ do
   match "css/*" $ do
     route idRoute
     compile compressCssCompiler
+
   match "posts/*" $ do
     let ctx = constField "type" "article" <> postCtx
     route $ metadataRoute titleRoute
@@ -65,6 +68,7 @@ main = hakyllWith config $ do
         >>= loadAndApplyTemplate "templates/post.html" ctx
         >>= saveSnapshot "content"
         >>= loadAndApplyTemplate "templates/default.html" ctx
+
   match "index.html" $ do
     route idRoute
     compile $ do
@@ -77,7 +81,10 @@ main = hakyllWith config $ do
       getResourceBody
         >>= applyAsTemplate indexCtx
         >>= loadAndApplyTemplate "templates/default.html" indexCtx
-  match "templates/*" $ compile templateBodyCompiler
+
+  match "templates/*" $
+    compile templateBodyCompiler
+
   create ["sitemap.xml"] $ do
     route idRoute
     compile $ do
@@ -89,12 +96,16 @@ main = hakyllWith config $ do
               <> listField "pages" postCtx (return pages)
       makeItem ("" :: String)
         >>= loadAndApplyTemplate "templates/sitemap.xml" sitemapCtx
+
   create ["rss.xml"] $ do
     route idRoute
     compile (feedCompiler renderRss)
+
   create ["atom.xml"] $ do
     route idRoute
     compile (feedCompiler renderAtom)
+
+{- ORMOLU_ENABLE -}
 
 -- CONTEXT
 

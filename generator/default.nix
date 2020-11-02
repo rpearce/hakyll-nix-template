@@ -1,3 +1,3 @@
 { pkgs }:
 
-(pkgs.callPackage ./hpkgs.nix {}).my-site
+(pkgs.callPackage ./hpkgs.nix { }).hakyll-nix-template
