@@ -46,7 +46,7 @@ jobs:
 
       - name: GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v2.3.0
         with:
           build_dir: result
           target_branch: gh-pages
