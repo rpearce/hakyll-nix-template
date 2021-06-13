@@ -9,22 +9,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
 
     - name: Install Nix
-      uses: cachix/install-nix-action@v12
+      uses: cachix/install-nix-action@v13
       with:
         skip_adding_nixpkgs_channel: true
+        install_url: https://nixos-nix-install-tests.cachix.org/serve/lb41az54kzk6j12p81br4bczary7m145/install
+        install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
+        extra_nix_config: |
+          experimental-features = nix-command flakes
 
     - name: Build with cachix
-      uses: cachix/cachix-action@v8
+      uses: cachix/cachix-action@v10
       with:
         name: hakyll-nix-template
         signingKey: ${{ secrets.CACHIX_SIGNING_KEY }}
         #authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-    - run: nix-build
-    - run: nix-shell --run "echo OK"
+    - run: nix build
 
     - name: Artifact pages
       uses: actions/upload-artifact@v2
@@ -46,7 +49,7 @@ jobs:
 
       - name: GitHub Pages
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: crazy-max/ghaction-github-pages@v2.3.0
         with:
           build_dir: result
           target_branch: gh-pages

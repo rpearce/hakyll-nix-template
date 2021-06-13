@@ -9,18 +9,19 @@ import Text.Pandoc
   ( Extension (Ext_fenced_code_attributes, Ext_footnotes, Ext_gfm_auto_identifiers, Ext_implicit_header_references, Ext_smart),
     Extensions,
     ReaderOptions,
-    WriterOptions,
+    WriterOptions (writerHighlightStyle),
     extensionsFromList,
     githubMarkdownExtensions,
     readerExtensions,
     writerExtensions,
   )
+import Text.Pandoc.Highlighting (Style, breezeDark, styleToCss)
 
 -- CONFIG
 
 root :: String
 root =
-  "https://rpearce.github.io/hakyll-nix-template"
+  "https://my-site.com"
 
 siteName :: String
 siteName =
@@ -29,13 +30,13 @@ siteName =
 config :: Configuration
 config =
   defaultConfiguration
-    { destinationDirectory = "../dist",
+    { destinationDirectory = "dist",
       ignoreFile = const False,
       previewHost = "127.0.0.1",
       previewPort = 8000,
-      providerDirectory = "../src",
-      storeDirectory = "../hakyll-cache",
-      tmpDirectory = "../hakyll-cache/tmp"
+      providerDirectory = "src",
+      storeDirectory = "ssg/_cache",
+      tmpDirectory = "ssg/_tmp"
     }
 
 -- BUILD
@@ -56,50 +57,74 @@ main = hakyllWith config $ do
     $ \f -> match f $ do
       route idRoute
       compile copyFileCompiler
+
   match "css/*" $ do
     route idRoute
     compile compressCssCompiler
+
   match "posts/*" $ do
     let ctx = constField "type" "article" <> postCtx
+
     route $ metadataRoute titleRoute
     compile $
       pandocCompilerCustom
         >>= loadAndApplyTemplate "templates/post.html" ctx
         >>= saveSnapshot "content"
         >>= loadAndApplyTemplate "templates/default.html" ctx
+
   match "index.html" $ do
     route idRoute
     compile $ do
       posts <- recentFirst =<< loadAll "posts/*"
+
       let indexCtx =
             listField "posts" postCtx (return posts)
               <> constField "root" root
               <> constField "siteName" siteName
               <> defaultContext
+
       getResourceBody
         >>= applyAsTemplate indexCtx
         >>= loadAndApplyTemplate "templates/default.html" indexCtx
+
   match "templates/*" $
     compile templateBodyCompiler
+
   create ["sitemap.xml"] $ do
     route idRoute
     compile $ do
       posts <- recentFirst =<< loadAll "posts/*"
+
       let pages = posts
           sitemapCtx =
             constField "root" root
               <> constField "siteName" siteName
               <> listField "pages" postCtx (return pages)
+
       makeItem ("" :: String)
         >>= loadAndApplyTemplate "templates/sitemap.xml" sitemapCtx
+
   create ["rss.xml"] $ do
     route idRoute
     compile (feedCompiler renderRss)
+
   create ["atom.xml"] $ do
     route idRoute
     compile (feedCompiler renderAtom)
 
+  create ["css/code.css"] $ do
+    route idRoute
+    compile (makeStyle pandocHighlightStyle)
+
+
 {- ORMOLU_ENABLE -}
+
+
+-- COMPILER HELPERS
+
+makeStyle :: Style -> Compiler (Item String)
+makeStyle =
+  makeItem . compressCss . styleToCss
 
 -- CONTEXT
 
@@ -165,7 +190,12 @@ pandocWriterOpts :: WriterOptions
 pandocWriterOpts =
   defaultHakyllWriterOptions
     { writerExtensions = pandocExtensionsCustom
+    , writerHighlightStyle = Just pandocHighlightStyle
     }
+
+pandocHighlightStyle :: Style
+pandocHighlightStyle =
+  breezeDark -- https://hackage.haskell.org/package/pandoc/docs/Text-Pandoc-Highlighting.html
 
 -- FEEDS
 

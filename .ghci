@@ -1,4 +1,7 @@
 :def hoogle \x -> return $ ":!hoogle --count=15 \"" ++ x ++ "\""
 :def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
 :set -Wall
-:set -fno-warn-type-defaults
+:set -fno-warn-type-defaults -ferror-spans -freverse-errors -fprint-expanded-synonyms
+:set prompt "\ESC[0;32m%s\n\ESC[m[ghci]\ESC[38;5;172mλ \ESC[m"
+:set prompt-cont " \ESC[38;5;172m> \ESC[m"
+:load ssg/src/Slug.hs ssg/src/Main.hs

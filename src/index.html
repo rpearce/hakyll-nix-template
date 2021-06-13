@@ -7,7 +7,7 @@ title: "Hello, world!"
 ---
 
 <header>
-  <h1 class="ffs fs fs40">Hello, world!</h1>
+  <h1>Hello, world!</h1>
   <img
     alt="A woman sitting on a bench amongst trees at the end of a boardwalk leading to a pond with mountains in the background"
     src="./images/robert-pearce-UwHN0jU_YqQ-unsplash-800w.jpg"
@@ -16,12 +16,12 @@ title: "Hello, world!"
 </header>
 <main>
   <section>
-    <h2 class="ffs fs fs32">Blog Posts</h2>
+    <h2>Blog Posts</h2>
     <ul>
       $for(posts)$
         <li>
-          <div><a href=".$url$" class="ffss fs fs18">$title$</a></div>
-          <small class="ffss fs fs14">$date$</small>
+          <div><a href=".$url$">$title$</a></div>
+          <small>$date$</small>
         </li>
       $endfor$
     </ul>

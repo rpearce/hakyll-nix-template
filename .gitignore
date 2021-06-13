@@ -1,7 +1,7 @@
 .ghc.environment.*
-.pre-commit-config.yaml
+_cache
+_tmp
 dist
 dist-newstyle
-hakyll-cache
 node_modules
 result

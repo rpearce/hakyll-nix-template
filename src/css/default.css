@@ -20,11 +20,35 @@ body {
   -webkit-font-feature-settings: "kern", "liga", "clig", "calt";
   font-feature-settings: "kern", "liga", "clig", "calt";
   scroll-behavior: smooth;
+  font-size: 2rem;
 }
-.ffs { font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif; }
-.ffss { font-family: Tahoma, Arial, sans-serif; }
-.fs { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-.fs14 { font-size: 1.4rem; }
-.fs18 { font-size: 1.8rem; }
-.fs32 { font-size: 3.2rem; }
-.fs40 { font-size: 4.0rem; }
+body,
+input,
+button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1,
+h2 {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+h1 {
+  font-size: 4.0rem;
+}
+h2 {
+  font-size: 2.6rem;
+}
+small,
+p {
+  font-family: Tahoma, Arial, sans-serif;
+}
+small {
+  font-size: 1.6rem;
+  font-style: italic;
+}
+p {
+  font-size: 1.8rem;
+}
+pre.sourceCode {
+  padding: 2rem 1.5rem;
+}
