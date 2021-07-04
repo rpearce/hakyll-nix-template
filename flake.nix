@@ -1,7 +1,7 @@
 {
   description = "hakyll-nix-template";
 
-  nixConfig.bash-prompt = "[nix]\\e\[38;5;172mλ \\e\[m";
+  nixConfig.bash-prompt = "[nix]λ ";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-21.05";
