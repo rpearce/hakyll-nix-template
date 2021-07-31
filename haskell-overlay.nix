@@ -18,6 +18,11 @@ final: prev:
         let
           hakyll-src = hpPrev.callHackage "hakyll" "4.14.0.0" {};
           pandoc-src = hpPrev.callHackage "pandoc" "2.11.4" {}; # version specified by hayll 4.14.0.0
+          slugger-src = hpPrev.callHackageDirect {
+            pkg = "slugger";
+            ver = "0.1.0.1";
+            sha256 = "sha256-ggeo5TcbI4UlK/CtG4878USX9Cm7Faz16phdjlDOGaI=";
+          } {}; # not available yet because it's so new
         in rec {
           hakyll = pipe hakyll-src [
             doJailbreak
@@ -30,6 +35,8 @@ final: prev:
             doJailbreak
             dontCheck
           ];
+
+          slugger = slugger-src;
 
           ssg = hpPrev.callCabal2nix "ssg" ./ssg {};
 

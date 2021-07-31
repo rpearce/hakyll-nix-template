@@ -2,9 +2,9 @@
 
 import Control.Monad (forM_)
 import Data.Maybe (fromMaybe)
-import qualified Data.Text as T
 import Hakyll
-import Slug (toSlug)
+import qualified Data.Text as T
+import qualified Data.Text.Slugger as Slugger
 import Text.Pandoc
   ( Extension (Ext_fenced_code_attributes, Ext_footnotes, Ext_gfm_auto_identifiers, Ext_implicit_header_references, Ext_smart),
     Extensions,
@@ -229,7 +229,7 @@ getTitleFromMeta =
 
 fileNameFromTitle :: Metadata -> FilePath
 fileNameFromTitle =
-  T.unpack . (`T.append` ".html") . toSlug . T.pack . getTitleFromMeta
+  T.unpack . (`T.append` ".html") . Slugger.toSlug . T.pack . getTitleFromMeta
 
 titleRoute :: Metadata -> Routes
 titleRoute =

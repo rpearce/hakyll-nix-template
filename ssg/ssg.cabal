@@ -9,11 +9,10 @@ license-file:        LICENSE
 executable hakyll-site
   main-is:           Main.hs
   hs-source-dirs:    src
-  build-depends:     base == 4.*
-                   , hakyll ^>= 4.14
-                   , pandoc
-                   , text
-                   , time
-  other-modules:     Slug
+  build-depends:     base >= 4.8
+                   , hakyll >= 4.14
+                   , pandoc == 2.11.*
+                   , slugger >= 0.1.0.1
+                   , text >= 1.2
   ghc-options:       -Wall -threaded
   default-language:  Haskell2010
