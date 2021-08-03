@@ -17,6 +17,7 @@ import Text.Pandoc
   )
 import Text.Pandoc.Highlighting (Style, breezeDark, styleToCss)
 
+--------------------------------------------------------------------------------
 -- CONFIG
 
 root :: String
@@ -30,29 +31,28 @@ siteName =
 config :: Configuration
 config =
   defaultConfiguration
-    { destinationDirectory = "dist",
-      ignoreFile = const False,
-      previewHost = "127.0.0.1",
-      previewPort = 8000,
-      providerDirectory = "src",
-      storeDirectory = "ssg/_cache",
-      tmpDirectory = "ssg/_tmp"
+    { destinationDirectory = "dist"
+    , ignoreFile = const False
+    , previewHost = "127.0.0.1"
+    , previewPort = 8000
+    , providerDirectory = "src"
+    , storeDirectory = "ssg/_cache"
+    , tmpDirectory = "ssg/_tmp"
     }
 
+--------------------------------------------------------------------------------
 -- BUILD
-
-{- ORMOLU_DISABLE -}
 
 main :: IO ()
 main = hakyllWith config $ do
   forM_
-    [ "CNAME",
-      "favicon.ico",
-      "robots.txt",
-      "_config.yml",
-      "images/*",
-      "js/*",
-      "fonts/*"
+    [ "CNAME"
+    , "favicon.ico"
+    , "robots.txt"
+    , "_config.yml"
+    , "images/*"
+    , "js/*"
+    , "fonts/*"
     ]
     $ \f -> match f $ do
       route idRoute
@@ -117,15 +117,14 @@ main = hakyllWith config $ do
     compile (makeStyle pandocHighlightStyle)
 
 
-{- ORMOLU_ENABLE -}
-
-
+--------------------------------------------------------------------------------
 -- COMPILER HELPERS
 
 makeStyle :: Style -> Compiler (Item String)
 makeStyle =
   makeItem . compressCss . styleToCss
 
+--------------------------------------------------------------------------------
 -- CONTEXT
 
 feedCtx :: Context String
@@ -145,6 +144,7 @@ titleCtx :: Context String
 titleCtx =
   field "title" updatedTitle
 
+--------------------------------------------------------------------------------
 -- TITLE HELPERS
 
 replaceAmp :: String -> String
@@ -163,6 +163,7 @@ updatedTitle :: Item a -> Compiler String
 updatedTitle =
   fmap replaceTitleAmp . getMetadata . itemIdentifier
 
+--------------------------------------------------------------------------------
 -- PANDOC
 
 pandocCompilerCustom :: Compiler (Item String)
@@ -173,11 +174,11 @@ pandocExtensionsCustom :: Extensions
 pandocExtensionsCustom =
   githubMarkdownExtensions
     <> extensionsFromList
-      [ Ext_fenced_code_attributes,
-        Ext_gfm_auto_identifiers,
-        Ext_implicit_header_references,
-        Ext_smart,
-        Ext_footnotes
+      [ Ext_fenced_code_attributes
+      , Ext_gfm_auto_identifiers
+      , Ext_implicit_header_references
+      , Ext_smart
+      , Ext_footnotes
       ]
 
 pandocReaderOpts :: ReaderOptions
@@ -214,13 +215,14 @@ feedCompiler renderer =
 feedConfiguration :: FeedConfiguration
 feedConfiguration =
   FeedConfiguration
-    { feedTitle = "My Site",
-      feedDescription = "My Site Description",
-      feedAuthorName = "My Name",
-      feedAuthorEmail = "me@myemail.com",
-      feedRoot = root
+    { feedTitle = "My Site"
+    , feedDescription = "My Site Description"
+    , feedAuthorName = "My Name"
+    , feedAuthorEmail = "me@myemail.com"
+    , feedRoot = root
     }
 
+--------------------------------------------------------------------------------
 -- CUSTOM ROUTE
 
 getTitleFromMeta :: Metadata -> String
