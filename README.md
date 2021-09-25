@@ -43,16 +43,8 @@
 
   [hakyll]λ ghci
   ...
-  [1 of 2] Compiling Slug    ( ssg/src/Slug.hs, interpreted )
-  [2 of 2] Compiling Main    ( ssg/src/Main.hs, interpreted )
+  [1 of 1] Compiling Main    ( ssg/src/Main.hs, interpreted )
   ...
-
-  λ > :type toSlug
-  toSlug :: T.Text -> T.Text
-
-  λ > import Data.Text (pack)
-  λ > toSlug (pack "What If I Told You...")
-  "what-if-i-told-you"
   ```
 * Easily unbreak hakyll's nixpkgs distribution or change hakyll's compile flags
 via the `./haskell-overlay.nix` and `hakyll.patch` files
@@ -64,7 +56,7 @@ you:
 
 * [pandoc](https://github.com/jgm/pandoc/) markdown customization to make it as
   close to GitHub's markdown style as possible
-* `Slug.hs` module that makes nice link URIs based on post titles
+* [`slugger`](https://hackage.haskell.org/package/slugger) module is included that makes nice link URIs based on post titles
 * RSS & Atom XML feed generation
 * Sitemap generation
 * Code syntax highlighting customization
