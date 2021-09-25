@@ -45,6 +45,8 @@
   ...
   [1 of 1] Compiling Main    ( ssg/src/Main.hs, interpreted )
   ...
+  
+  λ >
   ```
 * Easily unbreak hakyll's nixpkgs distribution or change hakyll's compile flags
 via the `./haskell-overlay.nix` and `hakyll.patch` files
