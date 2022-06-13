@@ -20,11 +20,10 @@
         pkgs = import nixpkgs { inherit config overlays system; };
       in rec {
         defaultPackage = packages.website;
-        defaultApp = apps.hakyll-site;
 
         packages = with pkgs.myHaskellPackages; { inherit ssg website; };
 
-        apps.hakyll-site = flake-utils.lib.mkApp {
+        apps.default = flake-utils.lib.mkApp {
           drv = packages.ssg;
           exePath = "/bin/hakyll-site";
         };
