@@ -45,11 +45,9 @@
   ...
   [1 of 1] Compiling Main    ( ssg/src/Main.hs, interpreted )
   ...
-  
+
   λ >
   ```
-* Easily unbreak hakyll's nixpkgs distribution or change hakyll's compile flags
-via the `./haskell-overlay.nix` and `hakyll.patch` files
 
 ### hakyll
 
@@ -83,15 +81,8 @@ updated to `'refs/heads/my-main-branch'` in `./github/workflows/main.yml`.
 
 ### Nix Flakes
 
-If you don't have [nix](https://nixos.org) _and are not running macOS_, follow
-[the nix installation instructions](https://nixos.org/download.html).
-
-At the time of writing, the macOS installation is in a weird place. You should
-use this:
-
-```sh
-λ sh <(curl https://abathur-nix-install-tests.cachix.org/serve/yihf8zbs0jwph2rs9qfh80dnilijxdi2/install) --tarball-url-prefix https://abathur-nix-install-tests.cachix.org/serve
-```
+If you don't have [nix](https://nixos.org), follow [the nix installation
+instructions](https://nixos.org/download.html).
 
 Once you have nix installed, follow the instructions here to get access to
 flakes: https://nixos.wiki/wiki/Flakes.
@@ -99,72 +90,10 @@ flakes: https://nixos.wiki/wiki/Flakes.
 ### Cachix
 
 The `./.github/workflows/main.yml` file builds with help from
-[cachix](https://app.cachix.org), so you'll to generate a signing key to be able
-to do this.
+[cachix](https://app.cachix.org), so you'll need to generate a signing key to be
+able to do this.
 
 1. Create a cache on cachix for your project
 1. Follow cachix's instructions to generate a signing keypair
 1. Copy the signing keypair value to a new `CACHIX_SIGNING_KEY` secret on
    https://github.com/settings/secrets
-
-## Enable Content-Addressible Derivation (experimental)
-
-Given you have your nix conf `experimental-features` set to something like
-
-```
-experimental-features = "nix-command flakes ca-derivations ca-references"
-```
-
-Uncomment the `__contentAddressed = true;` line in `haskell-ovelray.nix`, and
-then run
-
-```sh
-λ nix build --experimental-features "ca-derivations flakes nix-command"
-```
-
-## Alternatives to the haskell overlay
-
-### Overriding `legacyPackages`' haskell compiler packages
-
-```nix
-pkgs = nixpkgs.legacyPackages.${system};
-myHaskellPackages = pkgs.haskell.packages.${haskellCompiler}.override {
-  overrides = hpFinal: hpPrev:
-    let
-      hakyll-src = hpPrev.callHackage "hakyll" "4.14.0.0" {};
-      pandoc-src = hpPrev.callHackage "pandoc" "2.11.4" {};
-    in {
-      hakyll = pipe hakyll-src [
-        doJailbreak
-        dontCheck
-        (withPatch ./hakyll.patch)
-        (withFlags [ "-f" "watchServer" "-f" "previewServer" ])
-      ];
-
-      pandoc = pipe pandoc-src [
-        doJailbreak
-        dontCheck
-      ];
-    };
-};
-```
-
-## Pulling `hakyll-src` from GitHub
-
-`hakyll-src`, used in the `haskell-overlay.nix` and in the prior example,
-doesn't have to come from hackage; it could come from what your pinned nixpkgs
-version has via `hakyll-src = hpPrev.hakyll`, or it could come from the hakyll
-repo pinned as a nix flake input:
-
-```nix
-hakyll-src = {
-  url = "github:jaspervdj/hakyll/v4.14.0.0";
-  flake = false;
-};
-```
-
-...and then:
-
-```nix
-hakyll-src = hpPrev.callCabal2nix "hakyll" hakyll-src {};
-```
