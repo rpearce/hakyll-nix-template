@@ -23,7 +23,7 @@
       let
         overlays = [ haskellNix.overlay
           (final: prev: {
-            bobProject = final.haskell-nix.project' {
+            hakyllProject = final.haskell-nix.project' {
               src = ./ssg;
               compiler-nix-name = "ghc925";
               shell.buildInputs = [
@@ -43,7 +43,7 @@
           inherit (haskellNix) config;
         };
 
-        flake = pkgs.bobProject.flake {};
+        flake = pkgs.hakyllProject.flake {};
 
         executable = "ssg:exe:hakyll-site";
 

@@ -2,24 +2,25 @@
 
 [Hakyll](https://jaspervdj.be/hakyll/) + [Nix](https://nixos.org) template
 
-[![built with nix](https://builtwithnix.org/badge.svg)](https://builtwithnix.org)
-
 ## Features
 
-### nix flakes
-
+* Can be ran with Nix or through a [Docker](https://www.docker.com) container
+  running Nix. If you're using Docker, then prefix your commands like `docker
+  compose run --rm app nix build`, and if you just want to start the hakyll dev
+  server, all you need to run is `docker-compose build` and then `docker-compose
+  up`
 * Build your site into the `./result/dist` folder:
-  ```sh
+  ```
   λ nix build
   ```
 * Start hakyll's dev server that reloads when changes are made:
-  ```sh
+  ```
   λ nix run . watch
   Listening on http://127.0.0.1:8000
   ...more logs
   ```
 * Run any hakyll command through `nix run .`!
-  ```sh
+  ```
   λ nix run . clean
   Removing dist...
   Removing ssg/_cache...
@@ -29,12 +30,12 @@
   * has your shell environment
   * has `hakyll-site` (for building/watching/cleaning hakyll projects)
   * has `hakyll-init` (for generating new projects)
-  * can have anything else you put in the `buildInputs` of the `devShell` in
-    `flake.nix`; for example: `haskell-language-server`, `hlint`, and `ormolu`
+  * can have anything else you put in the `shell.buildInputs` of the
+    `hakyllProject` in `flake.nix`
   * is set up to run `ghci` with some defaults and the modules loaded so you can
     make your own changes and test them out in the ghci REPL
 
-  ```sh
+  ```
   λ nix develop
 
   [hakyll]λ hakyll-site build
@@ -79,7 +80,7 @@ updated to `'refs/heads/my-main-branch'` in `./github/workflows/main.yml`.
 
 ## Setup
 
-### Nix Flakes
+### Nix & Flakes
 
 If you don't have [nix](https://nixos.org), follow [the nix installation
 instructions](https://nixos.org/download.html).
