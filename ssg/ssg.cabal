@@ -11,8 +11,8 @@ executable hakyll-site
   hs-source-dirs:    src
   build-depends:     base >= 4.8
                    , hakyll >= 4.14
-                   , pandoc == 2.11.*
+                   , pandoc >= 2.11
                    , slugger >= 0.1.0.1
-                   , text >= 1.2
+                   , text >= 1.2 && < 1.3
   ghc-options:       -Wall -threaded
   default-language:  Haskell2010

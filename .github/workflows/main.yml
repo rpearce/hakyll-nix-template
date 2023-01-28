@@ -13,11 +13,14 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v18
         with:
-          install_url: https://nixos-nix-install-tests.cachix.org/serve/i6laym9jw3wg9mw6ncyrk6gjx4l34vvx/install
-          install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
           extra_nix_config: |
-            experimental-features = nix-command flakes
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            allow-import-from-derivation = true
+            auto-optimise-store = true
+            experimental-features = nix-command flakes
+            substituters = https://cache.nixos.org https://cache.iog.io https://cache.zw3rk.com
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk=
 
       - name: Build with cachix
         uses: cachix/cachix-action@v12
@@ -25,10 +28,10 @@ jobs:
           name: hakyll-nix-template
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - run: nix build
+      - run: nix build --accept-flake-config
 
       - name: Artifact pages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: pages
           path: result/dist
@@ -40,17 +43,16 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: pages
           path: result
 
-      - name: GitHub Pages
+      - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           build_dir: result
           target_branch: gh-pages
-          keep_history: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
