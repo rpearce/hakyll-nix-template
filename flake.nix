@@ -45,9 +45,7 @@
 
         flake = pkgs.hakyllProject.flake {};
 
-        executable = "ssg:exe:hakyll-site";
-
-        hakyll-site = flake.packages.${executable};
+        hakyll-site = flake.packages."ssg:exe:hakyll-site";
 
         website = pkgs.stdenv.mkDerivation {
           name = "website";
@@ -68,7 +66,7 @@
             "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
           buildPhase = ''
-            ${flake.packages.${executable}}/bin/hakyll-site build --verbose
+            ${hakyll-site}/bin/hakyll-site build --verbose
           '';
 
           installPhase = ''
