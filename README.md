@@ -4,11 +4,6 @@
 
 ## Features
 
-* Can be ran with Nix or through a [Docker](https://www.docker.com) container
-  running Nix. If you're using Docker, then prefix your commands like `docker
-  compose run --rm app nix build`, and if you just want to start the hakyll dev
-  server, all you need to run is `docker-compose build` and then `docker-compose
-  up`
 * Build your site into the `./result/dist` folder:
   ```
   λ nix build

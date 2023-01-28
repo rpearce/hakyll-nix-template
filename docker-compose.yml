@@ -1,8 +1,0 @@
-services:
-  app:
-    build: .
-    volumes:
-      - .:/service
-      - site-vol:/var/site-vol
-volumes:
-  site-vol: {}
