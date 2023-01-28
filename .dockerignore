@@ -1,6 +1,4 @@
-!src/js/dist
-.DS_Store
-.ghc.environment.*
+.git
 _cache
 _tmp
 dist
