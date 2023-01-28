@@ -3,7 +3,7 @@
 
   nixConfig = {
     allow-import-from-derivation = "true";
-    bash-prompt = "[nix]λ ";
+    bash-prompt = "[hakyll-nix]λ ";
     extra-substituters = [
       "https://cache.iog.io"
       "https://cache.zw3rk.com" # https://github.com/input-output-hk/haskell.nix/issues/1408

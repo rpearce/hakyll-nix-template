@@ -33,11 +33,11 @@
   ```
   λ nix develop
 
-  [hakyll]λ hakyll-site build
+  [hakyll-nix]λ hakyll-site build
   ...
   Success
 
-  [hakyll]λ ghci
+  [hakyll-nix]λ ghci
   ...
   [1 of 1] Compiling Main    ( ssg/src/Main.hs, interpreted )
   ...
