@@ -1,1 +1,8 @@
+# This is a Jekyll config file. Jekyll is used by GitHub
+# Pages to manage static site generation / distribution.
+# If you don't use GitHub Pages or don't need to customize
+# it, you can delete this file and remove its entry in
+# `../ssg/src/Main.hs`.
+#
+# https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll
 include: []
