@@ -20,15 +20,31 @@ import Text.Pandoc
 import Text.Pandoc.Highlighting (Style, breezeDark, styleToCss)
 
 --------------------------------------------------------------------------------
+-- PERSONALIZATION
+
+mySiteName :: String
+mySiteName = "My Site Name"
+
+mySiteRoot :: String
+mySiteRoot = "https://my-site.com"
+
+myFeedTitle :: String
+myFeedTitle = "My Site"
+
+myFeedDescription :: String
+myFeedDescription = "My Site Description"
+
+myFeedAuthorName :: String
+myFeedAuthorName = "My Name"
+
+myFeedAuthorEmail :: String
+myFeedAuthorEmail = "me@myemail.com"
+
+myFeedRoot :: String
+myFeedRoot = mySiteRoot
+
+--------------------------------------------------------------------------------
 -- CONFIG
-
-root :: String
-root =
-  "https://my-site.com"
-
-siteName :: String
-siteName =
-  "My Site Name"
 
 -- Default configuration: https://github.com/jaspervdj/hakyll/blob/cd74877d41f41c4fba27768f84255e797748a31a/lib/Hakyll/Core/Configuration.hs#L101-L125
 config :: Configuration
@@ -91,8 +107,8 @@ main = hakyllWith config $ do
 
       let indexCtx =
             listField "posts" postCtx (return posts)
-              <> constField "root" root
-              <> constField "siteName" siteName
+              <> constField "root" mySiteRoot
+              <> constField "siteName" mySiteName
               <> defaultContext
 
       getResourceBody
@@ -109,8 +125,8 @@ main = hakyllWith config $ do
 
       let pages = posts
           sitemapCtx =
-            constField "root" root
-              <> constField "siteName" siteName
+            constField "root" mySiteRoot
+              <> constField "siteName" mySiteName
               <> listField "pages" postCtx (return pages)
 
       makeItem ("" :: String)
@@ -127,7 +143,6 @@ main = hakyllWith config $ do
   create ["css/code.css"] $ do
     route idRoute
     compile (makeStyle pandocHighlightStyle)
-
 
 --------------------------------------------------------------------------------
 -- COMPILER HELPERS
@@ -147,8 +162,8 @@ feedCtx =
 
 postCtx :: Context String
 postCtx =
-  constField "root" root
-    <> constField "siteName" siteName
+  constField "root" mySiteRoot
+    <> constField "siteName" mySiteName
     <> dateField "date" "%Y-%m-%d"
     <> defaultContext
 
@@ -210,6 +225,7 @@ pandocHighlightStyle :: Style
 pandocHighlightStyle =
   breezeDark -- https://hackage.haskell.org/package/pandoc/docs/Text-Pandoc-Highlighting.html
 
+--------------------------------------------------------------------------------
 -- FEEDS
 
 type FeedRenderer =
@@ -227,23 +243,19 @@ feedCompiler renderer =
 feedConfiguration :: FeedConfiguration
 feedConfiguration =
   FeedConfiguration
-    { feedTitle = "My Site"
-    , feedDescription = "My Site Description"
-    , feedAuthorName = "My Name"
-    , feedAuthorEmail = "me@myemail.com"
-    , feedRoot = root
+    { feedTitle = myFeedTitle
+    , feedDescription = myFeedDescription
+    , feedAuthorName = myFeedAuthorName
+    , feedAuthorEmail = myFeedAuthorEmail
+    , feedRoot = myFeedRoot
     }
 
 --------------------------------------------------------------------------------
 -- CUSTOM ROUTE
 
-getTitleFromMeta :: Metadata -> String
-getTitleFromMeta =
-  fromMaybe "no title" . lookupString "title"
-
 fileNameFromTitle :: Metadata -> FilePath
 fileNameFromTitle =
-  T.unpack . (`T.append` ".html") . Slugger.toSlug . T.pack . getTitleFromMeta
+  T.unpack . (`T.append` ".html") . Slugger.toSlug . T.pack . safeTitle
 
 titleRoute :: Metadata -> Routes
 titleRoute =
