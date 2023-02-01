@@ -11,6 +11,7 @@ executable hakyll-site
   hs-source-dirs:    src
   build-depends:     base >= 4.8
                    , hakyll >= 4.14
+                   , filepath >= 1.0
                    , pandoc >= 2.11
                    , slugger >= 0.1.0.1
                    , text >= 1.2 && < 1.3
