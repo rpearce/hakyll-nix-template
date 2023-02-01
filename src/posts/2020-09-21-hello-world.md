@@ -14,7 +14,7 @@ Hello, world! I am here!
 <img
   alt="Grapevines among rolling hills leading to the sea"
   src="./images/waiheke-stony-batter.jpg"
-  style="max-width:500px;"
+  height="200"
 />
 
 Haskell, for example:

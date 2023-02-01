@@ -14,7 +14,7 @@ updated: "2020-09-23T12:00:00Z"
 <img
   alt="Grapevines among rolling hills leading to the sea"
   src="./images/waiheke-stony-batter.jpg"
-  style="max-width:500px;"
+  height="200"
 />
 
 Haskell, por ejemplo:

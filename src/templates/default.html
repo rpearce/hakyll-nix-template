@@ -26,13 +26,13 @@
     <meta property="og:type" content="website">
     $endif$
 
+    $if(image)$
     <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="$root$$image$">
+    $endif$
     <meta property="twitter:site" content="$siteName$">
     <meta property="twitter:title" content="$title$">
     <meta property="twitter:description" content="$desc$">
-    $if(image)$
-    <meta property="twitter:image" content="$root$$image$">
-    $endif$
     $if(authorTwitter)$
     <meta property="twitter:creator" content="$authorTwitter$">
     $endif$
@@ -44,6 +44,6 @@
   </head>
   <body>
     $body$
-    <script async src="./js/script.js"></script>
+    <script defer src="./js/script.js"></script>
   </body>
 </html>
