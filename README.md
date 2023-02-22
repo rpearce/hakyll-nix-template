@@ -2,6 +2,19 @@
 
 [Hakyll](https://jaspervdj.be/hakyll/) + [Nix](https://nixos.org) template
 
+## Quick tips
+
+* Read the tutorial to get started! https://robertwpearce.com/the-hakyll-nix-template-tutorial.html
+* If you make changes to anything inside of `ssg/`, you'll need to clean the
+  hakyll cache and rebuild. This is the preferred series of commands for
+  rebuilding (with logs), cleaning the cache, and re-running the dev server:
+  
+  ```default
+  nix build --print-build-logs && \
+    nix run . clean && \
+    nix run . watch
+  ```
+
 ## Features
 
 * Build your site into the `./result/dist` folder:
