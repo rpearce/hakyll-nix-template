@@ -29,7 +29,7 @@ mySiteRoot :: String
 mySiteRoot = "https://my-site.com"
 
 myFeedTitle :: String
-myFeedTitle = "My Site"
+myFeedTitle = "My Feed Title"
 
 myFeedDescription :: String
 myFeedDescription = "My Site Description"
@@ -108,6 +108,7 @@ main = hakyllWith config $ do
       let indexCtx =
             listField "posts" postCtx (return posts)
               <> constField "root" mySiteRoot
+              <> constField "feedTitle" myFeedTitle
               <> constField "siteName" mySiteName
               <> defaultContext
 
@@ -163,6 +164,7 @@ feedCtx =
 postCtx :: Context String
 postCtx =
   constField "root" mySiteRoot
+    <> constField "feedTitle" myFeedTitle
     <> constField "siteName" mySiteName
     <> dateField "date" "%Y-%m-%d"
     <> defaultContext
