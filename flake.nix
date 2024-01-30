@@ -24,6 +24,7 @@
             hakyllProject = final.haskell-nix.project' {
               src = ./ssg;
               compiler-nix-name = "ghc948";
+              modules = [{ doHaddock = false; }];
               shell.buildInputs = [
                 hakyll-site
               ];
@@ -43,7 +44,9 @@
 
         flake = pkgs.hakyllProject.flake {};
 
-        hakyll-site = flake.packages."ssg:exe:hakyll-site";
+        executable = "ssg:exe:hakyll-site";
+
+        hakyll-site = flake.packages.${executable};
 
         website = pkgs.stdenv.mkDerivation {
           name = "website";
@@ -64,7 +67,7 @@
             "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
           buildPhase = ''
-            ${hakyll-site}/bin/hakyll-site build --verbose
+            ${flake.packages.${executable}}/bin/hakyll-site build --verbose
           '';
 
           installPhase = ''
