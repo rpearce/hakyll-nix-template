@@ -6,11 +6,9 @@
     bash-prompt = "[hakyll-nix]λ ";
     extra-substituters = [
       "https://cache.iog.io"
-      "https://cache.zw3rk.com" # https://github.com/input-output-hk/haskell.nix/issues/1408
     ];
     extra-trusted-public-keys = [
       "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-      "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
     ];
   };
 
@@ -25,7 +23,8 @@
           (final: prev: {
             hakyllProject = final.haskell-nix.project' {
               src = ./ssg;
-              compiler-nix-name = "ghc925";
+              compiler-nix-name = "ghc948";
+              modules = [{ doHaddock = false; }];
               shell.buildInputs = [
                 hakyll-site
               ];
@@ -45,7 +44,9 @@
 
         flake = pkgs.hakyllProject.flake {};
 
-        hakyll-site = flake.packages."ssg:exe:hakyll-site";
+        executable = "ssg:exe:hakyll-site";
+
+        hakyll-site = flake.packages.${executable};
 
         website = pkgs.stdenv.mkDerivation {
           name = "website";
@@ -66,7 +67,7 @@
             "${pkgs.glibcLocales}/lib/locale/locale-archive";
 
           buildPhase = ''
-            ${hakyll-site}/bin/hakyll-site build --verbose
+            ${flake.packages.${executable}}/bin/hakyll-site build --verbose
           '';
 
           installPhase = ''
