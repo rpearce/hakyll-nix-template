@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>My Feed Title</title>
+        <link>https://my-site.com</link>
+        <description><![CDATA[My Site Description]]></description>
+        <atom:link href="https://my-site.com/rss.xml" rel="self"
+                   type="application/rss+xml" />
+        <lastBuildDate>2020-09-23T12:00:00Z</lastBuildDate>
+        <item>
+    <title>¡Hola Mundo!</title>
+    <link>https://my-site.com/hola-mundo.html</link>
+    <description><![CDATA[<main>
+  <article>
+    <header>
+      <h1>
+        <a href="./hola-mundo.html">¡Hola Mundo!</a>
+      </h1>
+      <div>
+        2020-09-22 (updated: 2020-09-23T12:00:00Z)
+      </div>
+    </header>
+    <section>
+      <p>¡Hola Mundo! ¡Estoy aquí!</p>
+<p><img
+  alt="Grapevines among rolling hills leading to the sea"
+  src="./images/waiheke-stony-batter.jpg"
+  height="200"
+/></p>
+<p>Haskell, por ejemplo:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">toSlug ::</span> <span class="dt">T.Text</span> <span class="ot">-&gt;</span> <span class="dt">T.Text</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>toSlug <span class="ot">=</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  T.intercalate (T.singleton <span class="ch">&#39;-&#39;</span>) <span class="op">.</span> T.words <span class="op">.</span> T.toLower <span class="op">.</span> clean</span></code></pre></div>
+    </section>
+  </article>
+</main>
+]]></description>
+    <pubDate>Tue, 22 Sep 2020 00:00:00 UT</pubDate>
+    <guid>https://my-site.com/hola-mundo.html</guid>
+    <dc:creator>My Name</dc:creator>
+</item>
+<item>
+    <title>Hello, world!</title>
+    <link>https://my-site.com/hello-world.html</link>
+    <description><![CDATA[<main>
+  <article>
+    <header>
+      <h1>
+        <a href="./hello-world.html">Hello, world!</a>
+      </h1>
+      <div>
+        2020-09-21 (updated: 2020-09-22T12:00:00Z)
+      </div>
+    </header>
+    <section>
+      <p>Hello, world! I am here!</p>
+<p><img
+  alt="Grapevines among rolling hills leading to the sea"
+  src="./images/waiheke-stony-batter.jpg"
+  height="200"
+/></p>
+<p>Haskell, for example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">toSlug ::</span> <span class="dt">T.Text</span> <span class="ot">-&gt;</span> <span class="dt">T.Text</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>toSlug <span class="ot">=</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  T.intercalate (T.singleton <span class="ch">&#39;-&#39;</span>) <span class="op">.</span> T.words <span class="op">.</span> T.toLower <span class="op">.</span> clean</span></code></pre></div>
+    </section>
+  </article>
+</main>
+]]></description>
+    <pubDate>Mon, 21 Sep 2020 00:00:00 UT</pubDate>
+    <guid>https://my-site.com/hello-world.html</guid>
+    <dc:creator>My Name</dc:creator>
+</item>
+
+    </channel>
+</rss>

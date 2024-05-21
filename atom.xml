@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>My Feed Title</title>
+    <link href="https://my-site.com/atom.xml" rel="self" />
+    <link href="https://my-site.com" />
+    <id>https://my-site.com/atom.xml</id>
+    <author>
+        <name>My Name</name>
+        <email>me@myemail.com</email>
+    </author>
+    <updated>2020-09-23T12:00:00Z</updated>
+    <entry>
+    <title>¡Hola Mundo!</title>
+    <link href="https://my-site.com/hola-mundo.html" />
+    <id>https://my-site.com/hola-mundo.html</id>
+    <published>2020-09-22T00:00:00Z</published>
+    <updated>2020-09-23T12:00:00Z</updated>
+    <summary type="html"><![CDATA[<main>
+  <article>
+    <header>
+      <h1>
+        <a href="./hola-mundo.html">¡Hola Mundo!</a>
+      </h1>
+      <div>
+        2020-09-22 (updated: 2020-09-23T12:00:00Z)
+      </div>
+    </header>
+    <section>
+      <p>¡Hola Mundo! ¡Estoy aquí!</p>
+<p><img
+  alt="Grapevines among rolling hills leading to the sea"
+  src="./images/waiheke-stony-batter.jpg"
+  height="200"
+/></p>
+<p>Haskell, por ejemplo:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">toSlug ::</span> <span class="dt">T.Text</span> <span class="ot">-&gt;</span> <span class="dt">T.Text</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>toSlug <span class="ot">=</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  T.intercalate (T.singleton <span class="ch">&#39;-&#39;</span>) <span class="op">.</span> T.words <span class="op">.</span> T.toLower <span class="op">.</span> clean</span></code></pre></div>
+    </section>
+  </article>
+</main>
+]]></summary>
+</entry>
+<entry>
+    <title>Hello, world!</title>
+    <link href="https://my-site.com/hello-world.html" />
+    <id>https://my-site.com/hello-world.html</id>
+    <published>2020-09-21T00:00:00Z</published>
+    <updated>2020-09-22T12:00:00Z</updated>
+    <summary type="html"><![CDATA[<main>
+  <article>
+    <header>
+      <h1>
+        <a href="./hello-world.html">Hello, world!</a>
+      </h1>
+      <div>
+        2020-09-21 (updated: 2020-09-22T12:00:00Z)
+      </div>
+    </header>
+    <section>
+      <p>Hello, world! I am here!</p>
+<p><img
+  alt="Grapevines among rolling hills leading to the sea"
+  src="./images/waiheke-stony-batter.jpg"
+  height="200"
+/></p>
+<p>Haskell, for example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">toSlug ::</span> <span class="dt">T.Text</span> <span class="ot">-&gt;</span> <span class="dt">T.Text</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>toSlug <span class="ot">=</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  T.intercalate (T.singleton <span class="ch">&#39;-&#39;</span>) <span class="op">.</span> T.words <span class="op">.</span> T.toLower <span class="op">.</span> clean</span></code></pre></div>
+    </section>
+  </article>
+</main>
+]]></summary>
+</entry>
+
+</feed>
