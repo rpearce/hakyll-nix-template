@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello, world!</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="I announce myself to the world">
+    
+    <meta name="author" content="My name">
+    
+    
+    <meta name="keywords" content="hello, announcement">
+    
+
+    <meta property="og:site_name" content="My Site Name">
+    <meta property="og:title" content="Hello, world!">
+    <meta property="og:url" content="https://my-site.com/hello-world.html">
+    <meta property="og:description" content="I announce myself to the world">
+    
+    <meta property="og:image" content="https://my-site.com./images/waiheke-stony-batter.jpg">
+    
+    
+    <meta property="og:type" content="article">
+    
+
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:image" content="https://my-site.com./images/waiheke-stony-batter.jpg">
+    
+    <meta property="twitter:site" content="My Site Name">
+    <meta property="twitter:title" content="Hello, world!">
+    <meta property="twitter:description" content="I announce myself to the world">
+    
+    <meta property="twitter:creator" content="@MyName">
+    
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="https://my-site.com/hello-world.html">
+
+    <link rel="alternate" href="./atom.xml" title="My Feed Title" type="application/atom+xml">
+    <link rel="alternate" href="./rss.xml" title="My Feed Title" type="application/rss+xml">
+
+    <link rel="stylesheet" href="./css/default.css" />
+    <link rel="stylesheet" href="./css/code.css" />
+  </head>
+  <body>
+    <main>
+  <article>
+    <header>
+      <h1>
+        <a href="./hello-world.html">Hello, world!</a>
+      </h1>
+      <div>
+        2020-09-21 (updated: 2020-09-22T12:00:00Z)
+      </div>
+    </header>
+    <section>
+      <p>Hello, world! I am here!</p>
+<p><img
+  alt="Grapevines among rolling hills leading to the sea"
+  src="./images/waiheke-stony-batter.jpg"
+  height="200"
+/></p>
+<p>Haskell, for example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">toSlug ::</span> <span class="dt">T.Text</span> <span class="ot">-&gt;</span> <span class="dt">T.Text</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>toSlug <span class="ot">=</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  T.intercalate (T.singleton <span class="ch">&#39;-&#39;</span>) <span class="op">.</span> T.words <span class="op">.</span> T.toLower <span class="op">.</span> clean</span></code></pre></div>
+    </section>
+  </article>
+</main>
+
+    <script defer src="./js/script.js"></script>
+  </body>
+</html>
