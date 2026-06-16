@@ -31,7 +31,7 @@ jobs:
       - run: nix build --accept-flake-config
 
       - name: Artifact pages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pages
           path: result/dist
