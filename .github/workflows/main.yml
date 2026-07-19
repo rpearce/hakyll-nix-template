@@ -16,11 +16,8 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-            allow-import-from-derivation = true
             auto-optimise-store = true
             experimental-features = nix-command flakes
-            substituters = https://cache.nixos.org https://cache.iog.io
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
 
       - name: Build with cachix
         uses: cachix/cachix-action@v17
@@ -28,7 +25,7 @@ jobs:
           name: hakyll-nix-template
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - run: nix build --accept-flake-config
+      - run: nix build
 
       - name: Artifact pages
         uses: actions/upload-artifact@v7
