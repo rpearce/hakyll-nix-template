@@ -77,8 +77,11 @@ hakyllConfiguration =
 mySiteName :: String
 mySiteName = siteName siteConfiguration
 
+-- | The site root with any trailing slash removed, so joins like @$root$$url$@
+-- (og:url, canonical links) can't produce a double slash if a forker writes
+-- @siteRoot@ with a trailing @/@.
 mySiteRoot :: String
-mySiteRoot = siteRoot siteConfiguration
+mySiteRoot = List.dropWhileEnd (== '/') (siteRoot siteConfiguration)
 
 myFeedTitle :: String
 myFeedTitle = H.feedTitle feedConfiguration
