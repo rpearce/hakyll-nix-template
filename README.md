@@ -5,10 +5,13 @@
 ## Quick tips
 
 * Read the tutorial to get started! https://robertwpearce.com/the-hakyll-nix-template-tutorial.html
+* All build inputs (GHC, Hakyll, pandoc, ...) come prebuilt from the default
+  [NixOS binary cache](https://cache.nixos.org), so a fresh clone builds without
+  compiling the toolchain from source and needs no extra substituter setup.
 * If you make changes to anything inside of `ssg/`, you'll need to clean the
   hakyll cache and rebuild. This is the preferred series of commands for
   rebuilding (with logs), cleaning the cache, and re-running the dev server:
-  
+
   ```default
   nix build --print-build-logs && \
     nix run . clean && \
@@ -98,11 +101,17 @@ flakes: https://nixos.wiki/wiki/Flakes.
 
 ### Cachix
 
-The `./.github/workflows/main.yml` file builds with help from
-[cachix](https://app.cachix.org), so you'll need to generate a signing key to be
-able to do this.
+The `./.github/workflows/main.yml` file pushes build results to
+[cachix](https://app.cachix.org) so CI (and anyone building your site) can reuse
+cached artifacts instead of rebuilding from source.
 
-1. Create a cache on cachix for your project
-1. Follow cachix's instructions to generate a signing keypair
-1. Copy the signing keypair value to a new `CACHIX_SIGNING_KEY` secret on
-   https://github.com/settings/secrets
+1. Create a cache on cachix for your project.
+1. **Rename the cache** in `./.github/workflows/main.yml`. It is currently
+   hardcoded to this template's cache (`name: hakyll-nix-template`, in the
+   "Build with cachix" step); point it at the cache you just created, otherwise
+   pushes will fail with a permissions error.
+1. Generate a personal auth token with write access to your cache at
+   https://app.cachix.org/personal-auth-tokens.
+1. Add it as a `CACHIX_AUTH_TOKEN` secret at
+   `https://github.com/<you>/<your-repo>/settings/secrets/actions` (this is the
+   secret name the workflow reads).

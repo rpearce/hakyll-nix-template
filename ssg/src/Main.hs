@@ -77,7 +77,6 @@ main = hakyllWith config $ do
     [ "CNAME"
     , "favicon.ico"
     , "robots.txt"
-    , "_config.yml"
     , "images/*"
     , "js/*"
     , "fonts/*"
@@ -96,8 +95,8 @@ main = hakyllWith config $ do
     route $ metadataRoute titleRoute
     compile $
       pandocCompilerCustom
-        >>= loadAndApplyTemplate "templates/post.html" ctx
         >>= saveSnapshot "content"
+        >>= loadAndApplyTemplate "templates/post.html" ctx
         >>= loadAndApplyTemplate "templates/default.html" ctx
 
   match "index.html" $ do
@@ -145,6 +144,14 @@ main = hakyllWith config $ do
     route idRoute
     compile (makeStyle pandocHighlightStyle)
 
+  -- Emit an empty .nojekyll so GitHub Pages serves the generated output
+  -- verbatim instead of running it through Jekyll (which would drop paths
+  -- beginning with an underscore). Generated via `create` rather than copied
+  -- from a source file, as Hakyll's provider does not reliably match dotfiles.
+  create [".nojekyll"] $ do
+    route idRoute
+    compile $ makeItem ("" :: String)
+
 --------------------------------------------------------------------------------
 -- COMPILER HELPERS
 
@@ -176,13 +183,19 @@ titleCtx =
 --------------------------------------------------------------------------------
 -- TITLE HELPERS
 
-replaceAmp :: String -> String
-replaceAmp =
-  replaceAll "&" (const "&amp;")
+-- | Escape the XML metacharacters that would otherwise produce invalid
+-- RSS/Atom feeds. The @&@ pass must run first so it does not re-escape the
+-- ampersands introduced by the other entities.
+escapeXml :: String -> String
+escapeXml =
+  replaceAll "\"" (const "&quot;")
+    . replaceAll ">" (const "&gt;")
+    . replaceAll "<" (const "&lt;")
+    . replaceAll "&" (const "&amp;")
 
-replaceTitleAmp :: Metadata -> String
-replaceTitleAmp =
-  replaceAmp . safeTitle
+escapedTitle :: Metadata -> String
+escapedTitle =
+  escapeXml . safeTitle
 
 safeTitle :: Metadata -> String
 safeTitle =
@@ -190,7 +203,7 @@ safeTitle =
 
 updatedTitle :: Item a -> Compiler String
 updatedTitle =
-  fmap replaceTitleAmp . getMetadata . itemIdentifier
+  fmap escapedTitle . getMetadata . itemIdentifier
 
 --------------------------------------------------------------------------------
 -- PANDOC
