@@ -72,13 +72,11 @@ you:
 * RSS & Atom XML feed generation
 * Sitemap generation
 * Code syntax highlighting customization
-* HTML output minification (drops comments and collapses insignificant
-  whitespace, leaving `<pre>`/`<textarea>`/`<script>`/`<style>` intact)
-* Friendly `updated` post dates (reformats the `updated` front-matter timestamp)
+* HTML output minification
 * ...other reasonable defaults
 
 Configure the dev server, cache & tmp directories, and more in
-`./ssg/src/Main.hs`.
+`./ssg/Hakyll/Site/Configuration.hs`.
 
 ### Deployment
 
