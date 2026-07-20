@@ -1,11 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Control.Monad (forM_)
+import Control.Monad (forM_, msum)
 import Data.List (isPrefixOf, isSuffixOf)
 import Data.Maybe (fromMaybe)
+import Data.Time.Clock (UTCTime)
+import Data.Time.Format (defaultTimeLocale, formatTime, parseTimeM)
 import Hakyll
 import qualified Data.Text as T
 import qualified Data.Text.Slugger as Slugger
+import qualified Text.HTML.TagSoup.Compressor as Compressor
 import System.FilePath (takeFileName)
 import Text.Pandoc
   ( Extension (Ext_fenced_code_attributes, Ext_footnotes, Ext_gfm_auto_identifiers, Ext_implicit_header_references, Ext_smart),
@@ -60,6 +63,7 @@ config =
     }
   where
     ignoreFile' path
+      | ".DS_Store" == fileName      = True
       | "."    `isPrefixOf` fileName = False
       | "#"    `isPrefixOf` fileName = True
       | "~"    `isSuffixOf` fileName = True
@@ -89,7 +93,7 @@ main = hakyllWith config $ do
     compile compressCssCompiler
 
   match "posts/*" $ do
-    let ctx = constField "type" "article" <> postCtx
+    let ctx = updatedField "updated" "%Y-%m-%d" <> constField "type" "article" <> postCtx
 
     route $ metadataRoute titleRoute
     compile $
@@ -97,6 +101,7 @@ main = hakyllWith config $ do
         >>= saveSnapshot "content"
         >>= loadAndApplyTemplate "templates/post.html" ctx
         >>= loadAndApplyTemplate "templates/default.html" ctx
+        >>= compressHtmlCompiler
 
   match "index.html" $ do
     route idRoute
@@ -113,6 +118,7 @@ main = hakyllWith config $ do
       getResourceBody
         >>= applyAsTemplate indexCtx
         >>= loadAndApplyTemplate "templates/default.html" indexCtx
+        >>= compressHtmlCompiler
 
   match "templates/*" $
     compile templateBodyCompiler
@@ -158,6 +164,11 @@ makeStyle :: Style -> Compiler (Item String)
 makeStyle =
   makeItem . compressCss . styleToCss
 
+-- | Minify the final rendered HTML: drop comments and collapse insignificant
+-- whitespace (leaving <pre>/<textarea>/<script>/<style> content intact).
+compressHtmlCompiler :: Item String -> Compiler (Item String)
+compressHtmlCompiler = pure . fmap (withTagList Compressor.compress)
+
 --------------------------------------------------------------------------------
 -- CONTEXT
 
@@ -174,6 +185,26 @@ postCtx =
     <> constField "siteName" mySiteName
     <> dateField "date" "%Y-%m-%d"
     <> defaultContext
+
+-- | A date field that reads the given metadata key (e.g. @updated@), parses it
+-- against a few common formats, and re-renders it with @format@. Yields no
+-- result when the key is absent or unparseable, so @$if(updated)$@ stays false.
+updatedField :: String -> String -> Context String
+updatedField key format = field key $ \item -> do
+  metadata <- getMetadata (itemIdentifier item)
+  case parseUpdated metadata of
+    Just t  -> pure (formatTime defaultTimeLocale format t)
+    Nothing -> noResult ("no parseable " ++ key ++ " field")
+  where
+    parseUpdated :: Metadata -> Maybe UTCTime
+    parseUpdated metadata =
+      lookupString key metadata
+        >>= \raw -> msum [parseTimeM True defaultTimeLocale fmt raw | fmt <- dateFormats]
+    dateFormats =
+      [ "%Y-%m-%d"
+      , "%Y-%m-%dT%H:%M:%SZ"
+      , "%a, %d %b %Y %H:%M:%S UT"
+      ]
 
 titleCtx :: Context String
 titleCtx =

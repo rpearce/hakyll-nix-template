@@ -10,12 +10,16 @@ executable hakyll-site
   default-language:  Haskell2010
   main-is:           Main.hs
   hs-source-dirs:    src
+  other-modules:     Text.HTML.TagSoup.Compressor
   build-depends:     base >= 4.17 && < 5
+                   , containers >= 0.6
                    , hakyll >= 4.16 && < 4.18
                    , filepath >= 1.0
                    , pandoc >= 3.1 && < 3.8
                    , slugger >= 0.1.0.2
+                   , tagsoup >= 0.14
                    , text >= 1 && < 3
+                   , time >= 1.9
   ghc-options:     -Wall
                    -Wcompat
                    -Widentities
