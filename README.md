@@ -63,7 +63,7 @@
 
 ### hakyll
 
-All of this is custmomizable, and here are some things that are already done for
+All of this is customizable, and here are some things that are already done for
 you:
 
 * [pandoc](https://github.com/jgm/pandoc/) markdown customization to make it as
@@ -72,10 +72,11 @@ you:
 * RSS & Atom XML feed generation
 * Sitemap generation
 * Code syntax highlighting customization
+* HTML output minification
 * ...other reasonable defaults
 
 Configure the dev server, cache & tmp directories, and more in
-`./ssg/src/Main.hs`.
+`./ssg/Hakyll/Site/Configuration.hs`.
 
 ### Deployment
 
