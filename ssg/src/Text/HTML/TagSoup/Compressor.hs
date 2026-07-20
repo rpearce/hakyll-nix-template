@@ -28,38 +28,45 @@ __Examples__ (with @parse = 'TS.parseTags'@ and @render = 'TS.renderTags'@):
 compress :: [TS.Tag String] -> [TS.Tag String]
 compress = go Set.empty
   where
+    -- Fold over the tag stream while carrying a `Set` of the element names we
+    -- are currently "inside", so we know when a text node's whitespace is
+    -- significant (see `insideSignificant`) and must be preserved.
     go :: Set.Set String -> [TS.Tag String] -> [TS.Tag String]
     go stack =
       \case
         [] -> []
 
-        -- Drop HTML comments: skip the tag and continue.
+        -- Remove an HTML comment by *not* prepending the tag and, instead,
+        -- continuing on with the rest of the tags.
         (TS.TagComment _ : rest) ->
           go stack rest
 
-        -- Track which elements we are currently inside by pushing the
-        -- (lower-cased) name on open...
+        -- On an open tag, like `<div>`, prepend it and continue, pushing its
+        -- (lower-cased) name onto the stack of elements we are inside.
         (tag@(TS.TagOpen name _) : rest) ->
           tag : go (Set.insert (lower name) stack) rest
 
-        -- ...and popping it back off on close.
+        -- On a closing tag, like `</div>`, prepend it and continue, popping its
+        -- name back off the stack.
         (tag@(TS.TagClose name) : rest) ->
           tag : go (Set.delete (lower name) stack) rest
 
-        -- Leave text inside whitespace-sensitive elements alone; collapse
-        -- insignificant whitespace everywhere else.
+        -- On a text node: if it sits inside a whitespace-sensitive element,
+        -- prepend it unchanged; otherwise, clean up its whitespace first.
         (tag@(TS.TagText _) : rest)
           | insideSignificant stack -> tag : go stack rest
           | otherwise               -> fmap cleanWhitespace tag : go stack rest
 
-        -- Anything else passes through unchanged.
+        -- Anything else is unexpected, so prepend it without change.
         (tag : rest) ->
           tag : go stack rest
 
     lower :: String -> String
     lower = map toLower
 
-    -- Elements whose whitespace-significant content must be preserved verbatim.
+    -- Elements whose whitespace is significant and must be preserved verbatim.
+    -- `script`/`style` matter too: collapsing newlines inside inline JS can
+    -- swallow a `//` line comment or change automatic-semicolon-insertion.
     insideSignificant :: Set.Set String -> Bool
     insideSignificant stack =
       any (`Set.member` stack) [ "pre", "script", "style", "textarea" ]
@@ -68,8 +75,14 @@ compress = go Set.empty
     cleanWhitespace " " = " "
     cleanWhitespace str = cleanSurroundingWhitespace str (cleanHtmlWhitespace str)
       where
-        -- Space, form feed, newline, carriage return, vertical tab. (Kept
-        -- narrow on purpose so non-breaking spaces etc. survive.)
+        -- The whitespace we treat as insignificant:
+        --   ' '  (space)
+        --   '\f' (form feed)
+        --   '\n' (newline / line feed)
+        --   '\r' (carriage return)
+        --   '\v' (vertical tab)
+        -- Deliberately narrower than `Data.Char.isSpace` so non-breaking spaces
+        -- and similar are left alone.
         isSpaceOrNewLineIsh :: Char -> Bool
         isSpaceOrNewLineIsh = (`elem` (" \f\n\r\v" :: String))
 
@@ -77,15 +90,18 @@ compress = go Set.empty
         cleanHtmlWhitespace :: String -> String
         cleanHtmlWhitespace = unwords . words'
           where
+            -- Like `words`, but splitting on `isSpaceOrNewLineIsh` rather than
+            -- `isSpace`, so we don't drop the whitespace we mean to keep.
+            -- https://hackage.haskell.org/package/base/docs/src/Data.OldList.html#words
             words' :: String -> [String]
             words' s = case dropWhile isSpaceOrNewLineIsh s of
               "" -> []
               s' -> w : words' s''
                 where (w, s'') = break isSpaceOrNewLineIsh s'
 
-        -- Re-add a single leading/trailing space when the original text had
-        -- surrounding whitespace, so adjacent inline elements do not run
-        -- together (e.g. @<a>x</a> <b>y</b>@).
+        -- After trimming, re-add a single leading/trailing space when the
+        -- original text had surrounding whitespace, so adjacent inline elements
+        -- do not run together (e.g. @<a>x</a> <b>y</b>@).
         cleanSurroundingWhitespace :: String -> String -> String
         cleanSurroundingWhitespace _ "" = ""
         cleanSurroundingWhitespace original trimmed =
