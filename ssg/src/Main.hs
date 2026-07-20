@@ -74,8 +74,7 @@ config =
 main :: IO ()
 main = hakyllWith config $ do
   forM_
-    [ "CNAME"
-    , "favicon.ico"
+    [ "favicon.ico"
     , "robots.txt"
     , "images/*"
     , "js/*"

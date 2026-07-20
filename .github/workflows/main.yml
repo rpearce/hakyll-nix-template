@@ -3,53 +3,64 @@ name: CI
 on:
   pull_request:
   push:
+    branches: [main]
+
+# Least-privilege default for all jobs; the deploy job widens its own scope.
+permissions:
+  contents: read
 
 jobs:
   build-nix:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@630ae543ea3a38a9a4166f03376c02c50f408342 # v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
             auto-optimise-store = true
             experimental-features = nix-command flakes
 
       - name: Build with cachix
-        uses: cachix/cachix-action@v17
+        uses: cachix/cachix-action@5f2d7c5294214f71b873db4b969586b980625e71 # v17
         with:
           name: hakyll-nix-template
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - run: nix build
 
-      - name: Artifact pages
-        uses: actions/upload-artifact@v7
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
-          name: pages
           path: result/dist
 
   deploy:
     if: github.ref == 'refs/heads/main'
+    needs: build-nix
     runs-on: ubuntu-latest
-    needs: [build-nix]
+    timeout-minutes: 10
+
+    # OIDC-based deployment to GitHub Pages: `pages: write` publishes the site
+    # and `id-token: write` lets the job mint the short-lived OIDC token that
+    # actions/deploy-pages exchanges for scoped access.
+    permissions:
+      pages: write
+      id-token: write
+
+    # Serialize deployments so two pushes to main can't race; never cancel a
+    # deploy that is already publishing.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: pages
-          path: result
-
       - name: Deploy to GitHub Pages
-        if: success()
-        uses: crazy-max/ghaction-github-pages@v5.0.0
-        with:
-          build_dir: result
-          target_branch: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5
