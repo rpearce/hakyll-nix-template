@@ -1,0 +1,10 @@
+{
+  "nixEnvSelector.nixFile": "${workspaceFolder}/shell.nix",
+  "nixEnvSelector.useFlakes": false,
+
+  // Use the Haskell Language Server from the Nix dev shell (put on PATH by your
+  // env loader — direnv or Nix Env Selector) instead of one the Haskell
+  // extension downloads, so HLS and its bundled hlint linter match this
+  // project's GHC and dependencies. See the README "Editor integration (HLS)".
+  "haskell.manageHLS": "PATH"
+}

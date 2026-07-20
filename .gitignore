@@ -1,4 +1,5 @@
 !src/js/dist
+.direnv
 .DS_Store
 .ghc.environment.*
 _cache

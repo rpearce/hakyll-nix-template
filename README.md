@@ -110,6 +110,39 @@ instructions](https://nixos.org/download.html).
 Once you have nix installed, follow the instructions here to get access to
 flakes: https://nixos.wiki/wiki/Flakes.
 
+### Editor integration (HLS)
+
+[Haskell Language Server](https://github.com/haskell/haskell-language-server)
+needs to run inside this project's Nix dev shell (which provides the matching
+GHC, the site's dependencies, HLS, `hlint`, and `ormolu`) to work in your
+editor. Two ways to wire that up:
+
+* **VS Code — Nix Env Selector (simplest).** Install the [Nix Env
+  Selector](https://marketplace.visualstudio.com/items?itemName=arrterian.nix-env-selector)
+  extension; this repo's `.vscode/settings.json` already points it at
+  `shell.nix` (which re-exports the flake's dev shell). No extra system tooling
+  required — this is what the bundled `.vscode/` recommends.
+* **Any editor / terminal — direnv (editor-agnostic).** Install
+  [`direnv`](https://direnv.net) and
+  [`nix-direnv`](https://github.com/nix-community/nix-direnv), then run `direnv
+  allow` in this directory. The bundled `.envrc` (`use flake`) loads the dev
+  shell in your terminal and any editor with direnv integration (Emacs `envrc`,
+  vim, etc.).
+
+Both reuse the single dev-shell definition in `flake.nix`, and HLS loads the
+Haskell project from `ssg/` automatically.
+
+This repo ships `.vscode/` defaults: on first open, VS Code recommends the
+[Haskell](https://marketplace.visualstudio.com/items?itemName=haskell.haskell)
+and [Nix Env
+Selector](https://marketplace.visualstudio.com/items?itemName=arrterian.nix-env-selector)
+extensions; `.vscode/settings.json` points Nix Env Selector at `shell.nix` and
+sets `haskell.manageHLS` to `"PATH"` so the Haskell extension uses HLS from the
+Nix dev shell rather than downloading its own. That HLS bundles **hlint**, so
+lint diagnostics and "Apply hint" code actions appear automatically — no
+separate linter needed. Add a `.hlint.yaml` at the repo root to customize the
+hlint rules.
+
 ### Cachix
 
 The `./.github/workflows/main.yml` file pushes build results to
