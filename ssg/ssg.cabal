@@ -10,7 +10,13 @@ executable hakyll-site
   default-language:  Haskell2010
   main-is:           Main.hs
   hs-source-dirs:    src
-  other-modules:     Text.HTML.TagSoup.Compressor
+  other-modules:     Hakyll.Site.Configuration
+                   , Hakyll.Site.CustomFields
+                   , Hakyll.Site.Feed
+                   , Hakyll.Site.Post
+                   , Hakyll.Site.Rules
+                   , Hakyll.Site.Sitemap
+                   , Text.HTML.TagSoup.Compressor
   build-depends:     base >= 4.17 && < 5
                    , containers >= 0.6
                    , hakyll >= 4.16 && < 4.18
