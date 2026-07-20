@@ -4,6 +4,7 @@
 
 module Hakyll.Site.Rules
   ( codeCss
+  , codeCssContent
   , copy
   , css
   , index
@@ -15,6 +16,7 @@ module Hakyll.Site.Rules
 --------------------------------------------------------------------------------
 
 import qualified Hakyll as H
+import qualified Hakyll.Site.Assets as HSAssets
 import qualified Hakyll.Site.Configuration as HSConfig
 import qualified Hakyll.Site.Post as HSPost
 import qualified Text.HTML.TagSoup.Compressor as TSCompressor
@@ -40,8 +42,8 @@ templates =
 --------------------------------------------------------------------------------
 -- INDEX
 
-index :: H.Rules ()
-index = do
+index :: HSAssets.Manifest -> H.Rules ()
+index manifest = do
   H.route H.idRoute
   H.compile $ do
     loadedPosts <- H.recentFirst =<< H.loadAll "posts/*"
@@ -55,13 +57,14 @@ index = do
     H.getResourceBody
       >>= H.applyAsTemplate indexCtx
       >>= H.loadAndApplyTemplate "templates/default.html" indexCtx
+      >>= HSAssets.versionAssetsCompiler HSConfig.mySiteRoot manifest
       >>= compressHtmlCompiler
 
 --------------------------------------------------------------------------------
 -- POSTS
 
-posts :: H.Rules ()
-posts = do
+posts :: HSAssets.Manifest -> H.Rules ()
+posts manifest = do
   let ctx = H.constField "type" "article" <> HSPost.postCtx
   H.route $ H.metadataRoute HSPost.titleRoute
   H.compile $
@@ -69,18 +72,24 @@ posts = do
       >>= H.saveSnapshot "content"
       >>= H.loadAndApplyTemplate "templates/post.html" ctx
       >>= H.loadAndApplyTemplate "templates/default.html" ctx
+      >>= HSAssets.versionAssetsCompiler HSConfig.mySiteRoot manifest
       >>= compressHtmlCompiler
 
 --------------------------------------------------------------------------------
 -- ASSETS
+
+-- | The generated syntax-highlighting stylesheet, as a string. Exposed so the
+-- asset manifest can fingerprint it alongside the source assets.
+codeCssContent :: String
+codeCssContent =
+  H.compressCss (PandocHighlight.styleToCss pandocHighlightStyle)
 
 -- | Generate the syntax-highlighting stylesheet from the pandoc highlight style
 -- (so code blocks are themed with a class-based stylesheet, no inline styles).
 codeCss :: H.Rules ()
 codeCss = do
   H.route H.idRoute
-  H.compile $
-    H.makeItem (H.compressCss (PandocHighlight.styleToCss pandocHighlightStyle))
+  H.compile $ H.makeItem codeCssContent
 
 -- | Emit an empty .nojekyll so GitHub Pages serves the generated output
 -- verbatim instead of running it through Jekyll.

@@ -73,10 +73,12 @@ you:
 * Sitemap generation
 * Code syntax highlighting customization
 * HTML output minification
+* Content-hashed asset cache-busting (assets get a `?v=<hash>` query string so
+  browsers refetch only when a file's contents change)
 * ...other reasonable defaults
 
 Configure the dev server, cache & tmp directories, and more in
-`./ssg/Hakyll/Site/Configuration.hs`.
+`./ssg/src/Hakyll/Site/Configuration.hs`.
 
 ### Deployment
 
