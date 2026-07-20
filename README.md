@@ -79,15 +79,26 @@ Configure the dev server, cache & tmp directories, and more in
 
 ### Deployment
 
-Deployment is set up through a [GitHub
-Action](https://github.com/features/actions) with [cachix](https://cachix.org),
-and it deploys to a [GitHub Pages](https://pages.github.com/) branch,
-`gh-pages`, when you merge code into your main branch.
+Deployment runs through a [GitHub
+Action](https://github.com/features/actions): every push to `main` builds the
+site with Nix and publishes it to [GitHub Pages](https://pages.github.com/)
+using GitHub's official Pages deployment (`actions/deploy-pages`). It publishes
+straight to the Pages CDN — there is no `gh-pages` branch — and authenticates
+with a short-lived
+[OIDC](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
+token rather than a long-lived credential.
 
-Setup information can be found below in the "Cachix" section.
+One-time setup for your fork:
 
-Note: If your main branch's name isn't `main`, ensure `'refs/heads/main'` gets
-updated to `'refs/heads/my-main-branch'` in `./github/workflows/main.yml`.
+1. Go to **Settings → Pages → Build and deployment → Source** and select
+   **GitHub Actions**.
+2. Custom domain (optional): set it under **Settings → Pages → Custom domain**.
+   This template ships without a `CNAME` file so it deploys cleanly by default;
+   if you prefer the file-based approach, add a `CNAME` file under `src/` and a
+   copy rule for it in the `forM_` list in `ssg/src/Main.hs`.
+
+Note: If your main branch isn't named `main`, update `branches: [main]` and the
+`if: github.ref == 'refs/heads/main'` in `./.github/workflows/main.yml`.
 
 ## Setup
 
