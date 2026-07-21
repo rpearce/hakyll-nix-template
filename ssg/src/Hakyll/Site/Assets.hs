@@ -31,7 +31,8 @@ type Manifest = Map.Map FilePath String
 
 -- | Build a `Manifest` by fingerprinting the site's static assets. Source
 -- assets are read from the given provider directory (the @css@, @js@, @images@,
--- and @fonts@ subdirectories, plus @favicon.ico@); @generated@ carries assets
+-- @fonts@, and @pdfs@ subdirectories, plus @favicon.ico@; missing directories
+-- are skipped); @generated@ carries assets
 -- Hakyll produces at build time (e.g. the highlight stylesheet) as
 -- @(outputPath, content)@ pairs so they can be fingerprinted too.
 --
@@ -42,7 +43,7 @@ type Manifest = Map.Map FilePath String
 -- restart to pick up an edited asset's new hash.
 buildManifest :: FilePath -> [(FilePath, String)] -> IO Manifest
 buildManifest providerDir generated = do
-  dirHashes <- concat <$> mapM hashDir [ "css", "js", "images", "fonts" ]
+  dirHashes <- concat <$> mapM hashDir [ "css", "js", "images", "fonts", "pdfs" ]
   favHashes <- hashFile "favicon.ico"
   let genHashes = [ (key, contentHash (TE.encodeUtf8 (T.pack content))) | (key, content) <- generated ]
   pure $ Map.fromList (dirHashes ++ favHashes ++ genHashes)
