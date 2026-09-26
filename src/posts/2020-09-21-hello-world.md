@@ -14,6 +14,7 @@ Hello, world! I am here!
 <img
   alt="Grapevines among rolling hills leading to the sea"
   src="./images/waiheke-stony-batter.jpg"
+  width="640"
   height="200"
 />
 

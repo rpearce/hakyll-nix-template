@@ -14,6 +14,7 @@ updated: "2020-09-23T12:00:00Z"
 <img
   alt="Grapevines among rolling hills leading to the sea"
   src="./images/waiheke-stony-batter.jpg"
+  width="640"
   height="200"
 />
 

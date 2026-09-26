@@ -1,6 +1,7 @@
 :root {
   font-size: 62.5%;
   box-sizing: border-box;
+  color-scheme: light dark;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -12,6 +13,18 @@
 html,
 body {
   min-height: 100vh;
+}
+img,
+picture,
+video,
+canvas,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+img {
+  height: auto;
 }
 body {
   font-kerning: normal;
